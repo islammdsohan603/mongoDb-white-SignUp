@@ -1,65 +1,44 @@
 'use client';
 
-import { authClient } from '@/lib/auth-client';
-import { Button } from '@heroui/react';
 import Link from 'next/link';
-import React from 'react';
+import { authClient } from '@/lib/auth-client';
 
-const NavbarPage = () => {
+export default function NavbarPage() {
   const { data: session } = authClient.useSession();
-
   const user = session?.user;
 
-  const handleSignOut = async () => {
-    await authClient.signOut();
-  };
-
   return (
-    <div>
-      <header className="shadow-2xs border-b-2 py-4">
-        <nav className="flex items-center justify-between w-10/12 mx-auto">
-          <h1>Auth</h1>
+    <header className="border-b border-gray-800 bg-[#0b1220] text-white">
+      <nav className="w-10/12 mx-auto flex justify-between items-center py-4">
+        <h1 className="text-xl font-bold">AuthSphere</h1>
 
-          <ul className="flex items-center gap-4">
-            <Link
-              className="bg-purple-500 px-4 py-2 rounded-3xl hover:bg-purple-800 duration-300"
-              href="/"
-            >
-              Home
-            </Link>
+        <div className="flex gap-4 items-center">
+          <Link href="/">Home</Link>
+          <Link href="/server-action">Dashboard</Link>
 
-            {!user ? (
-              <>
-                <Link
-                  className="bg-purple-500 px-4 py-2 rounded-3xl hover:bg-purple-800 duration-300"
-                  href="/signUp"
-                >
-                  SignUp
-                </Link>
-
-                <Link
-                  className="bg-purple-500 px-4 py-2 rounded-3xl hover:bg-purple-800 duration-300"
-                  href="/signin"
-                >
-                  Login
-                </Link>
-              </>
-            ) : (
-              <>
-                <div>
-                  <p className="text-sm font-semibold">{user?.name}</p>
-                </div>
-
-                <Button onClick={handleSignOut} color="danger">
-                  SignOut
-                </Button>
-              </>
-            )}
-          </ul>
-        </nav>
-      </header>
-    </div>
+          {!user ? (
+            <>
+              <Link href="/signin">Sign in</Link>
+              <Link
+                href="/signUp"
+                className="bg-purple-600 px-4 py-2 rounded-lg"
+              >
+                Get Started
+              </Link>
+            </>
+          ) : (
+            <>
+              <span>{user.name}</span>
+              <button
+                onClick={() => authClient.signOut()}
+                className="bg-red-500 px-4 py-2 rounded-lg"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      </nav>
+    </header>
   );
-};
-
-export default NavbarPage;
+}
