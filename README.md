@@ -93,15 +93,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 Pull requests are welcome! For major changes, please open an issue first to
 discuss what you'd like to change.
 
----
 
 
-## 👨‍💻 Author
-
-**Your Name**
-
-- GitHub: [@your-username](https://github.com/your-username)
-- LinkedIn: [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
+- LinkedIn: https://www.linkedin.com/in/sohanislamwebdev/
 
 ---
 
