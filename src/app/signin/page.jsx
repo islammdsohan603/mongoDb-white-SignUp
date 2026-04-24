@@ -1,25 +1,21 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
-import { Check } from '@gravity-ui/icons';
+import { Check, Eye, EyeSlash } from '@gravity-ui/icons';
 import {
   Button,
-  Description,
-  FieldError,
   Form,
   Input,
   Label,
   TextField,
+  FieldError,
 } from '@heroui/react';
 
-import { Eye, EyeSlash } from '@gravity-ui/icons';
-import { InputGroup } from '@heroui/react';
-import { useState } from 'react';
-
-import { useRouter } from 'next/navigation';
-
-const SignIn = () => {
+export default function SignIn() {
   const router = useRouter();
+  const [isVisible, setIsVisible] = useState(false);
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -33,66 +29,49 @@ const SignIn = () => {
       callbackURL: '/',
     });
 
-    console.log(data);
+    if (data) router.push('/');
     console.log(error);
   };
 
-  const [isVisible, setIsVisible] = useState(false);
-
   return (
-    <div className="w-10/12 mx-auto">
-      <h1 className="text-center text-4xl font-bold my-10">Sign In Page</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white">
+      <div className="w-full max-w-md bg-gray-900 p-6 rounded-xl border border-gray-800">
+        <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
 
-      <Form className="flex w-96 flex-col gap-4" onSubmit={onSubmit}>
-        <TextField isRequired name="email" type="email">
-          <Label>Email</Label>
-          <Input name="email" placeholder="john@example.com" />
-          <FieldError />
-        </TextField>
+        <Form onSubmit={onSubmit} className="space-y-4">
+          <TextField name="email" isRequired>
+            <Label>Email</Label>
+            <Input name="email" placeholder="you@example.com" />
+            <FieldError />
+          </TextField>
 
-        <TextField className="w-full max-w-2xs" name="password">
-          <Label>Password</Label>
+          <TextField name="password" isRequired>
+            <Label>Password</Label>
 
-          <InputGroup>
-            <InputGroup.Input
-              name="password"
-              type={isVisible ? 'text' : 'password'}
-              placeholder="Enter password"
-            />
+            <div className="relative">
+              <Input
+                name="password"
+                type={isVisible ? 'text' : 'password'}
+                className="pr-10"
+              />
 
-            <InputGroup.Suffix className="pr-0">
-              <Button
-                isIconOnly
-                aria-label={isVisible ? 'Hide password' : 'Show password'}
-                size="sm"
-                variant="ghost"
-                onPress={() => setIsVisible(!isVisible)}
+              <button
+                type="button"
+                onClick={() => setIsVisible(!isVisible)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
               >
-                {isVisible ? (
-                  <Eye className="size-4" />
-                ) : (
-                  <EyeSlash className="size-4" />
-                )}
-              </Button>
-            </InputGroup.Suffix>
-          </InputGroup>
+                {isVisible ? <Eye /> : <EyeSlash />}
+              </button>
+            </div>
 
-          <FieldError />
-        </TextField>
+            <FieldError />
+          </TextField>
 
-        <div className="flex gap-2">
-          <Button type="submit">
-            <Check />
-            Login
+          <Button type="submit" className="w-full">
+            <Check /> Login
           </Button>
-
-          <Button type="reset" variant="secondary">
-            Reset
-          </Button>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
   );
-};
-
-export default SignIn;
+}
